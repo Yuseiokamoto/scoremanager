@@ -71,7 +71,7 @@
                 <c:if test="${not empty subject}">
                     <a href="subject_update.jsp?code=${subject.cd}">戻る</a>
                 </c:if>
-                <a href="subject_list.jsp">科目一覧</a>
+                <a href="/tool/SubjectList.action">科目一覧</a>
             </div>
         </div>
     </div>

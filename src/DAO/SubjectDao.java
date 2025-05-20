@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bean.School;
 import bean.Subject;
 
 public class SubjectDao extends DAO {
@@ -84,4 +85,36 @@ public class SubjectDao extends DAO {
             return stmt.executeUpdate() > 0;
         }
     }
+
+	public List<Subject> filter(School school)throws Exception {
+		List<Subject> list = new ArrayList<>();
+	    Connection con = null;
+	    PreparedStatement st = null;
+	    ResultSet rs = null;
+
+	    try {
+	        con = getConnection();
+	        st = con.prepareStatement(
+	            "SELECT * FROM SUBJECT WHERE school_cd = ?"
+	        );
+	        st.setString(1, school.getSchoolCd());
+	        rs = st.executeQuery();
+
+	        while (rs.next()) {
+	            Subject subject = new Subject();
+	            subject.setCd(rs.getString("cd"));
+	            subject.setName(rs.getString("name"));
+	            subject.setSchoolCd(school.getSchoolCd());
+	            list.add(subject);
+	        }
+
+	    } finally {
+	        if (rs != null) rs.close();
+	        if (st != null) st.close();
+	        if (con != null) con.close();
+	    }
+
+	    return list;
+
+	}
 }
